@@ -1,0 +1,75 @@
+Copyright Maria Enescu 311CAa 2022-2023
+
+The IMAGE_EDITOR problem:
+
+The program contains 3 data structures, 25 auxiliary functions used to
+implement the problem and the main function.
+
+In the main function, the program reads the command line input from the
+keyboard through the read_line function, delimits it and assigns it to the
+command variable. Then, the corresponding functions are called and executed
+for each command:
+
+    * The LOAD command, through the command_load function, replaces the file
+    that is currently loaded in memory, if necessary, with the file entered
+    from the keyboard when reading the command. It then loads the image from
+    the file into the program's memory and calls the read_file function to
+    perform the reading from the desired file (this function processes PPM/PGM
+    image types). If the file was successfully loaded, the parameters that
+    define the surface (length and width) will be retained. Otherwise, in case
+    of failure, the desired message is displayed and the program returns to its
+    initial state, freeing the memory of the structure.
+
+    * The SELECT command, through the command_select function, displays desired
+    failure messages in case of an error. If the given command corresponds to
+    SELECT ALL, the parameters that define the entire surface (length and
+    width) will be retained. If the command is SELECT along with the parameters
+    x1, y1, x2, y2, the parameters will be verified to ensure they are
+    integers, and the surface will be resized according to the desired
+    parameters and their order (x1 < x2 and y1 < y2).
+
+    * The EQUALIZE command, through the command_equalize function, prints the
+    message in the need for a black and white image in case the image is
+    colored (1-white/black; 2-grey; 3-color), otherwise, the program calls the
+    equalization function where the black and white image will be equalized
+    (method described in the comments next to the code).
+
+    * The HISTOGRAM command, through the command_histogram function, verifies
+    if the x stars and y bins entered from the keyboard with the command are
+    integers. It prints a message indicating the need for a black and white
+    image in case the image is colored, as well as other messages, if
+    necessary, otherwise, the program calls the histogram function, which will
+    display the image's histogram.
+
+    * The CROP command, through the command_crop function where the crop
+    function is called, resizes the image to the one contained in the current
+    selection (SELECT), thus, from here the resulting sub-image will be taken
+    after the CROP command.
+    
+    * The APPLY command and the parameter entered from the keyboard, through
+    the command_apply function, check if the image is of color type (3-color),
+    if not, error messages are displayed, but if it is, then the corresponding
+    filter is applied to each parameter using the apply_filter function: the
+    pixel values in the image are multiplied by the corresponding pixel values
+    in the kernel,and the new pixel result is the sum of the elements.
+
+    * The SAVE command, through the command_save function, the program saves
+    the pixel values in the file entered from the keyboard in the format:
+    ascii, if "ascii" is entered along with the command, or binary, if only
+    the command and the desired file are introduced; the save_file function
+    saves the last image loaded by the LOAD operation, this will remain loaded
+    in memory.
+
+    * The ROTATE command, through the command_rotate function, if the rotation
+    angle entered from the keyboard along with the command is not a multiple of
+    90 or does not have the appropriate dimensions, then error messages are
+    displayed. Otherwise, the rotate_img function is called in the following
+    way: if the rotation value is positive, the image is rotated clockwise
+    using the "rotate_clock" function. If the rotation value is negative, the
+    image is rotated counterclockwise using the "rotate_anticlock" function
+    (rotation angle / 90 = number of rotations).
+   
+    * The EXIT command, through the command_exit function, successfully closes
+    the program, deallocates all resources and stops the program execution.
+
+Any other command will be reported as an error, with a corresponding message.
